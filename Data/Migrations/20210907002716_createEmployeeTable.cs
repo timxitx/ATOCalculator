@@ -15,7 +15,7 @@ namespace ATOCalculator.Data.Migrations
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
                     AnnualSalary = table.Column<int>(nullable: false),
-                    SuperRate = table.Column<int>(nullable: false),
+                    SuperRate = table.Column<double>(nullable: false),
                     PaymentMonth = table.Column<int>(nullable: false),
                 },
                 constraints: table =>

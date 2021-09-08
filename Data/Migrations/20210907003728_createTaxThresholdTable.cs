@@ -26,6 +26,8 @@ namespace ATOCalculator.Data.Migrations
             {
                 table.PrimaryKey("PK_TaxThreshold", x => x.Id);
             });
+
+            migrationBuilder.Sql("INSERT INTO TaxThreshold (Threshold1, TaxRate1, Threshold2, TaxRate2, Threshold3, TaxRate3, Threshold4, TaxRate4, TaxRate5) VALUES (18200, 0, 37000, 0.19, 87000, 0.325, 180000, 0.37, 0.45)");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
