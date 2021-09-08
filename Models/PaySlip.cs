@@ -23,17 +23,16 @@ namespace ATOCalculator.Models
         {
             int taxBase = 0;
             double incomeTax = 0;
-            for(int i=0; i<taxthresholds.Length-1; i++)
+            for (int i = 0; i < taxthresholds.Length - 1; i++)
             {
-                if (salary >= taxthresholds[i]+1 && salary < taxthresholds[i+1])
+                if (salary >= taxthresholds[i] + 1 && salary < taxthresholds[i + 1])
                 {
                     incomeTax = (taxBase + (salary - taxthresholds[i] + 1) * taxRates[i]) / 12;
                     break;
                 }
-                taxBase += (int) Math.Round((taxthresholds[i + 1] - taxthresholds[i] + 1) * taxRates[i], MidpointRounding.AwayFromZero);
-                Console.WriteLine("taxbase"+i+":" + taxBase);
+                taxBase += (int)Math.Round((taxthresholds[i + 1] - taxthresholds[i] + 1) * taxRates[i], MidpointRounding.AwayFromZero);
             }
-            return (int) Math.Round(incomeTax, MidpointRounding.AwayFromZero);
+            return (int)Math.Round(incomeTax, MidpointRounding.AwayFromZero);
         }
     }
 }

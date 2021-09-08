@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tim\\Documents\\ATOCalculator\\ATOCalculator.csproj": {}
+    "C:\\Users\\tim\\Documents\\newDotnet\\ATOCalculator\\ATOCalculator.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tim\\Documents\\ATOCalculator\\ATOCalculator.csproj": {
+    "C:\\Users\\tim\\Documents\\newDotnet\\ATOCalculator\\ATOCalculator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tim\\Documents\\ATOCalculator\\ATOCalculator.csproj",
+        "projectUniqueName": "C:\\Users\\tim\\Documents\\newDotnet\\ATOCalculator\\ATOCalculator.csproj",
         "projectName": "ATOCalculator",
-        "projectPath": "C:\\Users\\tim\\Documents\\ATOCalculator\\ATOCalculator.csproj",
+        "projectPath": "C:\\Users\\tim\\Documents\\newDotnet\\ATOCalculator\\ATOCalculator.csproj",
         "packagesPath": "C:\\Users\\tim\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tim\\Documents\\ATOCalculator\\obj\\",
+        "outputPath": "C:\\Users\\tim\\Documents\\newDotnet\\ATOCalculator\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tim\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,15 +40,9 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
-            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[5.0.9, )"
-            },
-            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[5.0.9, )"
-            },
-            "Microsoft.AspNetCore.Identity.UI": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.9, )"
             },
@@ -57,6 +51,8 @@
               "version": "[5.0.9, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.9, )"
             },
@@ -64,9 +60,9 @@
               "target": "Package",
               "version": "[1.11.1, )"
             },
-            "System.Collections.NonGeneric": {
+            "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[4.3.0, )"
+              "version": "[5.6.3, )"
             }
           },
           "imports": [

@@ -2,17 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ATOCalculator.Data;
+using ATOCalculator.Models;
 using ATOCalculator.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace ATOCalculator
 {
@@ -28,35 +29,48 @@ namespace ATOCalculator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var server = Configuration["DBServer"] ?? "localhost";
+
+            var server = Configuration["DBServer"] ?? "DESKTOP-I7272U8\\LOCALHOST";
             var port = Configuration["DBPort"] ?? "1433";
-            var user = Configuration["DBUser"] ?? "";
-            var password = Configuration["DBPassword"] ?? "";
-            var database = Configuration["DBDatabase"] ?? "test";
+            var user = Configuration["DBUser"] ?? "SA";
+            var password = Configuration["DBPassword"] ?? "Test123!";
+            var database = Configuration["Database"] ?? "test";
 
-
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(
-                    $"Server={server}, {port};Initial Catalog={database};User ID={user};Password={password}"));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+                    $"Server={server},{port};Initial Catalog={database};User ID={user};Password={password}"));
+            services.AddSingleton<EmployeeService, EmployeeService>();
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ATOCalculator", Version = "v1" });
+            });
 
-            services.AddSingleton<EmployeeService>();
-            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext dataContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ATOCalculator v1"));
+            }
+
+            PrepDB.Prepopulation(app);
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
-            //dataContext.Database
         }
     }
 }

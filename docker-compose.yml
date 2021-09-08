@@ -1,14 +1,15 @@
-﻿version: '3'
+version: '3.6'
 services:
-  ms-sql-server:
-    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
-      ACCEPT_EULA: "tim"
-      SA_PASSWORD: "123456"
-      MSSQL_PID: Express
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Test123!"
     ports:
       - "1433:1433"
   application:
     build: .
+    environment:
+      DBServer: "mssql"
     ports:
       - "8080:80"

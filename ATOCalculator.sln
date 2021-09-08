@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATOCalculator", "ATOCalculator.csproj", "{FBB56BAF-61AA-4827-AE06-D7ED88B0DCB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATOCalculator", "ATOCalculator.csproj", "{E82C2B1A-F613-41A8-81E9-0B333B56C523}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FBB56BAF-61AA-4827-AE06-D7ED88B0DCB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBB56BAF-61AA-4827-AE06-D7ED88B0DCB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBB56BAF-61AA-4827-AE06-D7ED88B0DCB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBB56BAF-61AA-4827-AE06-D7ED88B0DCB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E82C2B1A-F613-41A8-81E9-0B333B56C523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E82C2B1A-F613-41A8-81E9-0B333B56C523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E82C2B1A-F613-41A8-81E9-0B333B56C523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E82C2B1A-F613-41A8-81E9-0B333B56C523}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FEC4AAFA-023C-43E4-9637-27161453E409}
+		SolutionGuid = {BF4697E9-0C7E-4D40-BAB3-0DF448DD7B00}
 	EndGlobalSection
 EndGlobal
