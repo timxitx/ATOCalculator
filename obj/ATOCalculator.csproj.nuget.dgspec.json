@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tim\\Documents\\newDotnet\\ATOCalculator\\ATOCalculator.csproj": {}
+    "C:\\Users\\tim\\Documents\\ATOCalculator\\ATOCalculator.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tim\\Documents\\newDotnet\\ATOCalculator\\ATOCalculator.csproj": {
+    "C:\\Users\\tim\\Documents\\ATOCalculator\\ATOCalculator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tim\\Documents\\newDotnet\\ATOCalculator\\ATOCalculator.csproj",
+        "projectUniqueName": "C:\\Users\\tim\\Documents\\ATOCalculator\\ATOCalculator.csproj",
         "projectName": "ATOCalculator",
-        "projectPath": "C:\\Users\\tim\\Documents\\newDotnet\\ATOCalculator\\ATOCalculator.csproj",
+        "projectPath": "C:\\Users\\tim\\Documents\\ATOCalculator\\ATOCalculator.csproj",
         "packagesPath": "C:\\Users\\tim\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tim\\Documents\\newDotnet\\ATOCalculator\\obj\\",
+        "outputPath": "C:\\Users\\tim\\Documents\\ATOCalculator\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tim\\AppData\\Roaming\\NuGet\\NuGet.Config",
