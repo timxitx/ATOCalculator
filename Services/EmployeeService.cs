@@ -12,13 +12,13 @@ namespace ATOCalculator.Services
         TaxThreshold taxThreshold;
         int[] taxThresholds;
         double[] taxRates;
-        int taxThresholdId;
+        List<Result> results = new List<Result>();
         public EmployeeService()
         {
             this.taxThreshold = new TaxThreshold();
-            taxThresholdId = 1;
+            this.taxThreshold.Id = 1;
         }
-        public ActionResult<IEnumerable<PaySlip>> ExportPaySlip(List<Employee> employees, DataContext context)
+        public List<Result> ExportPaySlip(List<Employee> employees, DataContext context)
         {
             taxThresholds = new int[] { -1, this.taxThreshold.Threshold1, this.taxThreshold.Threshold2, this.taxThreshold.Threshold3, this.taxThreshold.Threshold4, int.MaxValue };
             taxRates = new double[] { this.taxThreshold.TaxRate1, this.taxThreshold.TaxRate2, this.taxThreshold.TaxRate3, this.taxThreshold.TaxRate4, this.taxThreshold.TaxRate5 };
@@ -26,24 +26,29 @@ namespace ATOCalculator.Services
             System.Console.WriteLine("Adding employee...");
             foreach (Employee e in employees)
             {
+                Result result = new Result();
                 System.Console.WriteLine("Add Employee...");
                 Employee employeeInDatabase =  (from ee in context.employee where ee.FirstName == e.FirstName && ee.LastName == e.LastName select ee).SingleOrDefault();
                 Console.WriteLine(employeeInDatabase);
-                var employeeId = e.Id;
+                var employeeId = 1;
                 if (employeeInDatabase == null)
                 {
                     System.Console.WriteLine("New Record.");
                     context.employee.Add(e);
+                    context.SaveChanges();
+                    employeeId = e.Id;
+                    result.employee = e;
                 } else
                 {
                     employeeInDatabase.AnnualSalary = e.AnnualSalary;
                     employeeInDatabase.SuperRate = e.SuperRate;
                     employeeInDatabase.paymentMonth = e.paymentMonth;
                     employeeId = employeeInDatabase.Id;
+                    result.employee = employeeInDatabase;
                 }
-                context.SaveChanges();
 
-                PaySlip payslipInDatabase = (from ps in context.payslip where ps.EmployeeId == employeeId && ps.TaxThresholdId == taxThresholdId select ps).SingleOrDefault();
+               
+                PaySlip payslipInDatabase = (from ps in context.payslip where ps.EmployeeId == employeeId && ps.TaxThresholdId == this.taxThreshold.Id select ps).SingleOrDefault();
                 if(payslipInDatabase == null)
                 {
                     PaySlip payslip = new PaySlip();
@@ -55,17 +60,18 @@ namespace ATOCalculator.Services
                     payslip.FromDate = firstDayOfMonth.Day.ToString();
                     payslip.ToDate = firstDayOfMonth.AddMonths(1).AddDays(-1).Day.ToString();
                     payslip.EmployeeId = employeeId;
-                    payslip.TaxThresholdId = taxThresholdId;
+                    payslip.TaxThresholdId = this.taxThreshold.Id;
                     context.payslip.Add(payslip);
                     context.SaveChanges();
+                    result.payslip = payslip;
                 } else
                 {
-                    context.payslip.Add(payslipInDatabase);
+                    result.payslip = payslipInDatabase;
                 }
                
             }
             
-            return context.payslip;
+            return results;
         }
 
         public string AssignTaxThreshold(TaxThreshold tts, DataContext context)
@@ -81,10 +87,10 @@ namespace ATOCalculator.Services
                 context.taxThreshold.Add(tts);
                 context.SaveChanges();
                 this.taxThreshold = tts;
-                taxThresholdId = tts.Id;
                 return "Imported successfully!";
             } else
             {
+                this.taxThreshold = taxThresholdInDatabase;
                 return "Already had this record!";
             }
         }

@@ -33,7 +33,7 @@ namespace ATOCalculator.Controllers
 
         [Route("[action]")]
         [HttpPost]
-        public ActionResult<IEnumerable<PaySlip>> InputEmployee([FromBody] List<Employee> employees)
+        public List<Result> InputEmployee([FromBody] List<Employee> employees)
         {
             return employeeService.ExportPaySlip(employees, _context);
         }

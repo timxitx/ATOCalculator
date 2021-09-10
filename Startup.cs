@@ -30,7 +30,7 @@ namespace ATOCalculator
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var server = Configuration["DBServer"] ?? "DESKTOP-I7272U8\\LOCALHOST";
+            var server = Configuration["DBServer"] ?? "LOCALHOST";
             var port = Configuration["DBPort"] ?? "1433";
             var user = Configuration["DBUser"] ?? "SA";
             var password = Configuration["DBPassword"] ?? "Test123!";
