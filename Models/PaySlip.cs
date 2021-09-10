@@ -19,7 +19,12 @@ namespace ATOCalculator.Models
         public int EmployeeId { get; set; }
         public int TaxThresholdId { get; set; }
 
-        public int CalculateIcomeTax(int salary, int[] taxthresholds, double[] taxRates)
+        public int SetGrossIncome(double annualSalary)
+        {
+            return (int)Math.Round(annualSalary / 12, MidpointRounding.AwayFromZero);
+        }
+
+        public int SetIcomeTax(int salary, int[] taxthresholds, double[] taxRates)
         {
             int taxBase = 0;
             double incomeTax = 0;
@@ -33,6 +38,28 @@ namespace ATOCalculator.Models
                 taxBase += (int)Math.Round((taxthresholds[i + 1] - taxthresholds[i] + 1) * taxRates[i], MidpointRounding.AwayFromZero);
             }
             return (int)Math.Round(incomeTax, MidpointRounding.AwayFromZero);
+        }
+
+        public int SetNetIncome()
+        {
+            return GrossIncome - IncomeTax;
+        }
+
+        public int SetSuperannuation( double superRate)
+        {
+            return (int)Math.Round(GrossIncome * superRate, MidpointRounding.AwayFromZero);
+        }
+
+        public string SetFromDate(int paymentMonth)
+        {
+            DateTime firstDayOfMonth = new DateTime(DateTime.Now.Year, paymentMonth, 1);
+            return firstDayOfMonth.Day.ToString(); 
+        }
+
+        public string SetToDate(int paymentMonth)
+        {
+            DateTime firstDayOfMonth = new DateTime(DateTime.Now.Year, paymentMonth, 1);
+            return firstDayOfMonth.AddMonths(1).AddDays(-1).Day.ToString();
         }
     }
 }

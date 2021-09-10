@@ -58,19 +58,5 @@ namespace ATOCalculator.Controllers
         {
             return _context.payslip.ToList();
         }
-
-        [Route("[action]")]
-        [HttpGet]
-        public string Clear()
-        {
-            return employeeService.clearData(_context);
-        }
-        /*
-        [HttpGet]
-        public string Get()
-        {
-            return "Hi this is the home page";
-        }
-        */
     }
 }

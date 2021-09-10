@@ -12,7 +12,6 @@ namespace ATOCalculator.Services
         TaxThreshold taxThreshold;
         int[] taxThresholds;
         double[] taxRates;
-        List<Result> results = new List<Result>();
         public EmployeeService()
         {
             this.taxThreshold = new TaxThreshold();
@@ -22,6 +21,7 @@ namespace ATOCalculator.Services
         {
             taxThresholds = new int[] { -1, this.taxThreshold.Threshold1, this.taxThreshold.Threshold2, this.taxThreshold.Threshold3, this.taxThreshold.Threshold4, int.MaxValue };
             taxRates = new double[] { this.taxThreshold.TaxRate1, this.taxThreshold.TaxRate2, this.taxThreshold.TaxRate3, this.taxThreshold.TaxRate4, this.taxThreshold.TaxRate5 };
+            List<Result> results = new List<Result>();
 
             System.Console.WriteLine("Adding employee...");
             foreach (Employee e in employees)
@@ -35,7 +35,6 @@ namespace ATOCalculator.Services
                 {
                     System.Console.WriteLine("New Record.");
                     context.employee.Add(e);
-                    context.SaveChanges();
                     employeeId = e.Id;
                     result.employee = e;
                 } else
@@ -47,18 +46,28 @@ namespace ATOCalculator.Services
                     result.employee = employeeInDatabase;
                 }
 
-               
-                PaySlip payslipInDatabase = (from ps in context.payslip where ps.EmployeeId == employeeId && ps.TaxThresholdId == this.taxThreshold.Id select ps).SingleOrDefault();
-                if(payslipInDatabase == null)
+                try
                 {
-                    PaySlip payslip = new PaySlip();
-                    payslip.GrossIncome = (int)Math.Round((double)e.AnnualSalary / 12, MidpointRounding.AwayFromZero);
-                    payslip.IncomeTax = payslip.CalculateIcomeTax(e.AnnualSalary, taxThresholds, taxRates);
-                    payslip.NetIncome = payslip.GrossIncome - payslip.IncomeTax;
-                    payslip.Superannuation = (int)Math.Round(payslip.GrossIncome * e.SuperRate, MidpointRounding.AwayFromZero);
-                    DateTime firstDayOfMonth = new DateTime(DateTime.Now.Year, e.paymentMonth, 1);
-                    payslip.FromDate = firstDayOfMonth.Day.ToString();
-                    payslip.ToDate = firstDayOfMonth.AddMonths(1).AddDays(-1).Day.ToString();
+                    context.SaveChanges();
+                }
+                catch (Exception error)
+                {
+                    Console.WriteLine("Failed to import employee:" + e.FirstName + e.LastName);
+                    Console.WriteLine(error);
+                }
+
+
+
+                PaySlip payslipInDatabase = (from ps in context.payslip where ps.EmployeeId == employeeId && ps.TaxThresholdId == this.taxThreshold.Id select ps).SingleOrDefault();
+                PaySlip payslip = new PaySlip();
+                if (payslipInDatabase == null)
+                {
+                    payslip.GrossIncome = payslip.SetGrossIncome(e.AnnualSalary);
+                    payslip.IncomeTax = payslip.SetIcomeTax(e.AnnualSalary, taxThresholds, taxRates);
+                    payslip.NetIncome = payslip.SetNetIncome();
+                    payslip.Superannuation = payslip.SetSuperannuation(e.SuperRate);
+                    payslip.FromDate = payslip.SetFromDate(e.paymentMonth);
+                    payslip.ToDate = payslip.SetToDate(e.paymentMonth);
                     payslip.EmployeeId = employeeId;
                     payslip.TaxThresholdId = this.taxThreshold.Id;
                     context.payslip.Add(payslip);
@@ -66,9 +75,25 @@ namespace ATOCalculator.Services
                     result.payslip = payslip;
                 } else
                 {
+                    payslipInDatabase.GrossIncome = payslipInDatabase.SetGrossIncome(e.AnnualSalary);
+                    payslipInDatabase.IncomeTax = payslipInDatabase.SetIcomeTax(e.AnnualSalary, taxThresholds, taxRates);
+                    payslipInDatabase.NetIncome = payslipInDatabase.SetNetIncome();
+                    payslipInDatabase.Superannuation = payslipInDatabase.SetSuperannuation(e.SuperRate);
+                    payslipInDatabase.FromDate = payslipInDatabase.SetFromDate(e.paymentMonth);
+                    payslipInDatabase.ToDate = payslipInDatabase.SetToDate(e.paymentMonth);
                     result.payslip = payslipInDatabase;
                 }
-               
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception error)
+                {
+                    Console.WriteLine("Failed to import payslip");
+                    Console.WriteLine(error);
+                }
+                results.Add(result);
             }
             
             return results;
@@ -84,26 +109,22 @@ namespace ATOCalculator.Services
                                tt.TaxRate4 == tts.TaxRate4 && tt.TaxRate5 == tts.TaxRate5 select tt).SingleOrDefault();
             if(taxThresholdInDatabase == null)
             {
-                context.taxThreshold.Add(tts);
-                context.SaveChanges();
-                this.taxThreshold = tts;
-                return "Imported successfully!";
+                try
+                {
+                    context.taxThreshold.Add(tts);
+                    context.SaveChanges();
+                    this.taxThreshold = tts;
+                    return "Imported successfully!";
+                } catch (Exception error)
+                {
+                    Console.WriteLine(error);
+                    return "Failed to import!";
+                }
             } else
             {
                 this.taxThreshold = taxThresholdInDatabase;
                 return "Already had this record!";
             }
-        }
-
-
-        public string clearData(DataContext context)
-        {
-            context.employee.RemoveRange(context.employee.ToList());
-            context.payslip.RemoveRange(context.payslip.ToList());
-            TaxThreshold tt = (from t in context.taxThreshold where t.Id == 3 select t).SingleOrDefault();
-            context.taxThreshold.Remove(tt);
-            context.SaveChanges();
-            return "done";
         }
     }
 }
